@@ -24,7 +24,10 @@ module Sublayer
         
         @axe_output = stdout
         @accessibility_issues = parse_axe_output(output: stdout)
-        @accessibility_issues.empty? ? puts("No accessibility issues found") : puts("Accessibility issues detected")
+
+        formatted_issues = @accessibility_issues.map { |issue| issue["description"] }.join("\n\n")
+
+        @accessibility_issues.empty? ? puts("No accessibility issues found") : puts("Found #{@accessibility_issues.length} accessibility issues: \n\n#{formatted_issues}")
       end
 
       goal_condition do
@@ -32,7 +35,10 @@ module Sublayer
       end
 
       step do
-        # This agent only identifies accessibility issues; it does not automatically fix them.
+        if @accessibility_issues.empty?
+          system("git checkout -- index.html")
+        end
+
         contents = File.read("./index.html")
 
         fixed = FixA11yGenerator.new(contents: contents, issues: @accessibility_issues).generate
@@ -40,6 +46,7 @@ module Sublayer
         puts Diffy::Diff.new(contents, fixed).to_s(:color)
 
         File.write("./index.html", fixed)
+
         FileUtils.touch("./trigger.txt")
       end
 
