@@ -23,7 +23,7 @@ module Sublayer
         stdout, stderr, status = Open3.capture3("axe --exit --stdout http://localhost:8080")
         
         @axe_output = stdout
-        @accessibility_issues = parse_axe_output(output: stdout)
+        @accessibility_issues = JSON.parse(stdout)[0]["violations"]
 
         formatted_issues = @accessibility_issues.map { |issue| issue["description"] }.join("\n\n")
 
