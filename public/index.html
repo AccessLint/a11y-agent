@@ -1,0 +1,336 @@
+<html>
+
+<head>
+  <title>Welcome to CityLights! [Inaccessible Home Page]</title>
+  <style></style>
+  <link href="../css/meta.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript">
+    function changecolor(id, colour) {
+      document.getElementById(id).style.backgroundColor = colour;
+    }
+    function switchimage(imgName, imgSrc) {
+      if (document.images) {
+        if (imgSrc != "none") {
+          document.images[imgName].src = imgSrc;
+        }
+      }
+    }
+  </script>
+  <script src="../js/onload.js" type="text/javascript"></script>
+</head>
+
+<body text="#000000" bgcolor="#d7d7cd" leftmargin="0px" topmargin="0px" marginwidth="0px" marginheight="0px"
+  link="#226c8e" vlink="#226c8e" alink="#226c8e">
+  <div id="page">
+    <table width="100%" border="0px" cellspacing="0px" cellpadding="0px" bgcolor="#d7d7cd">
+      <tr valign="middle">
+        <td width="100%" align="center">
+          <table width="800px" border="0px" cellspacing="0px" cellpadding="0px" bgcolor="white">
+            <tr height="10px">
+              <td width="10px" background="./img/border_left_top.gif"><img src="./img/border_left_top.gif" width="10px"
+                  height="10px"></td>
+              <td width="780px" background="./img/border_top.gif"><img src="./img/border_top.gif" height="10px"></td>
+              <td width="10px" background="./img/border_right_top.gif"><img src="./img/border_right_top.gif"
+                  width="10px" height="10px"></td>
+            </tr>
+            <tr>
+              <td width="10px" background="./img/border_left.gif"><img src="./img/border_left.gif" width="10px"></td>
+              <td width="780px" align="center">
+                <table width="780px" height="144px" border="0px" cellspacing="0px" cellpadding="0px" bgcolor="white">
+                  <tr height="86px">
+                    <td width="443px" background="./img/top_logo_next.gif" valign="middle">
+                      <div><a href="home.html"><img src="./img/top_logo.gif" width="443px" height="86px"
+                            alt="Red dot with a white letter 'C' that symbolizes a moon crescent as well as the sun. This logo is followed by a black banner that says 'CITYLIGHTS' which is the name of this online portal. Finally, the slogan of the portal, 'your access to the city', follows in a turquoise green handwriting style and with a slight slant across the top banner."></a>
+                      </div>
+                    </td>
+                    <td width="24px" valign="middle"><img src="./img/top_logo_next_end.gif" width="24px" height="86px">
+                    </td>
+                    <td width="128px" valign="middle"><img src="./img/top_weather.gif" width="128px" height="86px"></td>
+                    <td width="22px" valign="middle"><img src="./img/top_logo_next_start.gif" width="22px"
+                        height="86px"></td>
+                    <td width="163px" background="./img/top_logo_next.gif" align="center" valign="middle">
+                      <select onchange="location.href = this.value;">
+                        <option selected>QUICKMENU ----&gt;</option>
+                        <option value="../offsite.html">Broadcasting</option>
+                        <option value="../offsite.html">Education</option>
+                        <option value="../offsite.html">Electricity</option>
+                        <option value="../offsite.html">Fire service</option>
+                        <option value="../offsite.html">Gas service</option>
+                        <option value="../offsite.html">Health care</option>
+                        <option value="../offsite.html">Police service</option>
+                        <option value="../offsite.html">Public Libraries</option>
+                        <option value="../offsite.html">Social services</option>
+                        <option value="../offsite.html">Social housing</option>
+                        <option value="../offsite.html">Telecommunications</option>
+                        <option value="../offsite.html">Town planning</option>
+                        <option value="../offsite.html">Transportation</option>
+                        <option value="../offsite.html">Waste management</option>
+                        <option value="../offsite.html">Water services</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr height="7px">
+                    <td width="780px" background="./img/mark.gif" colspan="5"><img src="./img/mark.gif" width="158px"
+                        height="7px"></td>
+                  </tr>
+                  <tr height="25px">
+                    <td colspan="5">
+                      <table width="780px" border="0px" cellspacing="0px" cellpadding="0px">
+                        <tr height="25px">
+                          <td bgcolor="#EDEDED" width="380px">
+                            <font color="black" face="Verdana" size="2">&nbsp;&nbsp;<b>Traffic:</b> Construction work on
+                              Main Road</font>
+                          </td>
+                          <td bgcolor="#FFFFFF" align="right" id="weather">
+                            <font color="black" face="Verdana" size="2"><b>Today:</b>
+                              <script language="JavaScript">
+                                var now = new Date();
+                                var days = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+                                var months = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+                                var date = ((now.getDate() < 10) ? "0" : "") + now.getDate();
+                                function fourdigits(number) {
+                                  return (number < 1000) ? number + 1900 : number;
+                                }
+                                today = days[now.getDay()] + " " + date + " " + months[now.getMonth()] + " " + (fourdigits(now.getYear())) + ", Sunny, 23&deg;C&nbsp;&nbsp;</font>";
+                                document.all.weather.setAttribute("bgcolor", "#EDEDED", 0);
+                                document.write(today);
+                              </script>
+                            </font>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr height="1px">
+                    <td width="780px" background="./img/marker2_w.gif" colspan="5"><img src="./img/marker2_w.gif"
+                        width="78px" height="1px"></td>
+                  </tr>
+                  <tr height="25px">
+                    <td colspan="5">&nbsp;</td>
+                  </tr>
+                </table>
+                <table width="780px" border="0px" cellspacing="0px" cellpadding="0px" bgcolor="white">
+                  <tr width="780px">
+                    <td width="155px" bgcolor="#e4e4e4" valign="top">
+                      <table width="155px" border="0px" cellspacing="0px" cellpadding="0px">
+                        <tr height="1px">
+                          <td width="155px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px"
+                              height="1px"></td>
+                          <td width="1px" background="./img/marker2_t.gif" rowspan="9" valign="top"><img
+                              src="./img/marker2_t.gif" width="1" height="30px"></td>
+                        </tr>
+                        <tr height="34px">
+                          <td width="154px" bgcolor="#EDEDED" id="home"
+                            onmouseover="switchimage('nav_home', './img/nav_home2.gif'); changecolor('home','#FFF')"
+                            onmouseout="switchimage('nav_home', './img/nav_home.gif'); changecolor('home','#EDEDED')"><a
+                              href="javascript:location.href='home.html';" onfocus="blur();"><img name="nav_home"
+                                src="./img/nav_home.gif" width="88" height="27" hspace="15" border="0px"></a></td>
+                        </tr>
+                        <tr height="1px">
+                          <td width="154px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px"
+                              height="1px"></td>
+                        </tr>
+                        <tr height="34px">
+                          <td width="154px" bgcolor="#EDEDED" id="news"
+                            onmouseover="switchimage('nav_news', './img/nav_news2.gif'); changecolor('news','#FFF')"
+                            onmouseout="switchimage('nav_news', './img/nav_news.gif'); changecolor('news','#EDEDED')"><a
+                              href="javascript:location.href='news.html';" onfocus="blur();"><img
+                                src="./img/nav_news.gif" name="nav_news" width="90" height="21" hspace="12"
+                                border="0px"></a></td>
+                        </tr>
+                        <tr height="1px">
+                          <td width="154px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px"
+                              height="1px"></td>
+                        </tr>
+                        <tr height="34px">
+                          <td width="154px" bgcolor="#EDEDED" id="tickets"
+                            onmouseover="switchimage('nav_facts', './img/nav_facts2.gif'); changecolor('tickets','#FFF')"
+                            onmouseout="switchimage('nav_facts', './img/nav_facts.gif'); changecolor('tickets','#EDEDED')">
+                            <a href="javascript:location.href='tickets.html';" onfocus="blur();"><img name="nav_facts"
+                                src="./img/nav_facts.gif" width="105" height="23" hspace="9" border="0px"></a></td>
+                        </tr>
+                        <tr height="1px">
+                          <td width="154px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px"
+                              height="1px"></td>
+                        </tr>
+                        <tr height="34px">
+                          <td width="154px" bgcolor="#EDEDED" id="survey"
+                            onmouseover="switchimage('nav_survey', './img/nav_survey2.gif'); changecolor('survey','#FFF')"
+                            onmouseout="switchimage('nav_survey', './img/nav_survey.gif'); changecolor('survey','#EDEDED')">
+                            <a href="javascript:location.href='survey.html';" onfocus="blur();"><img
+                                src="./img/nav_survey.gif" name="nav_survey" width="107" height="32" hspace="8"
+                                border="0px"></a></td>
+                        </tr>
+                        <tr height="1px">
+                          <td width="154px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px"
+                              height="1px"></td>
+                        </tr>
+                      </table>
+                    </td>
+                    <td width="20px"><img src="./img/blank_5x5.gif" width="20px" height="5px"></td>
+                    <td width="434px" height="600px" valign="top" id="main">
+                      <p class="headline">Welcome to CityLights</p>
+                      <p>Citylights is the new portal for visitors and residents. Find out what's on, book tickets, and
+                        get the latest news.</p>
+                      <div id="content">
+                        <div class="midwidth">
+                          <div></div>
+                        </div>
+                        <div class="newsbar">
+                          <div class="newsheadline"><img src="./img/headline_middle.gif" width="23" height="24"
+                              align="absmiddle"> <a href="news.html" onfocus="blur();">Heat wave linked to
+                              temperatures</a></div>
+                          <div class="newsheadline"><img src="./img/headline_middle.gif" width="23" height="24"
+                              align="absmiddle"> <a href="news.html" onfocus="blur();">Man Gets Nine Months in Violin
+                              Case</a></div>
+                          <div class="newsheadline"><img src="./img/headline_middle.gif" width="23" height="24"
+                              align="absmiddle"> <a href="news.html" onfocus="blur();">Lack of brains hinders
+                              research</a></div>
+                          <div class="clear">
+                            <div class="null"></div>
+                          </div>
+                        </div>
+                        <div class="newsbar">
+                          <div class="image" style="background: url(./img/panda-sm.jpg) center center no-repeat #cccccc"
+                            title="image">
+                            <div class="null"></div>
+                          </div>
+                          <div class="image"
+                            style="background: url(./img/oldenburgstudentviolin34.jpg) center center no-repeat #cccccc"
+                            title="image">
+                            <div class="null"></div>
+                          </div>
+                          <div class="image"
+                            style="background: url(./img/BrainInJar.jpg) center center no-repeat #cccccc;"
+                            title="image">
+                            <div class="null"></div>
+                          </div>
+                          <div class="clear">
+                            <div class="null"></div>
+                          </div>
+                        </div>
+                        <div class="newsbar">
+                          <div class="story"><span>After three years of effort city scientists now agree that the
+                              primary cause of the 2003 heatwave was hot air from our <a href="news.html"
+                                onfocus="blur();"><img src="./img/morearrow.gif" width="48" height="10" alt=""
+                                  border="0" onmouseover="this.src='./img/morearrow_a.gif'"
+                                  onmouseout="this.src='./img/morearrow.gif'" style="vertical-align: bottom"></a></span>
+                          </div>
+                          <div class="story"><span>Mayor: These kinds of crimes need more creative, effective
+                              punishments. For example, we could require compulsory <a href="news.html"
+                                onfocus="blur();"><img src="./img/morearrow.gif" width="48" height="10" alt=""
+                                  border="0" onmouseover="this.src='./img/morearrow_a.gif'"
+                                  onmouseout="this.src='./img/morearrow.gif'" style="vertical-align: bottom"></a></span>
+                          </div>
+                          <div class="story"><span>Brain donations: huge drop off in brain donations due to the great
+                              'success' of 'Slow Traffic, Safe Streets' policy <a href="news.html"
+                                onfocus="blur();"><img src="./img/morearrow.gif" width="48" height="10" alt=""
+                                  border="0" onmouseover="this.src='./img/morearrow_a.gif'"
+                                  onmouseout="this.src='./img/morearrow.gif'" style="vertical-align: bottom"></a></span>
+                          </div>
+                        </div>
+                        <hr style="visibility:hidden; clear:both;">
+                        <p class="subheadline">Elsewhere on the Web</p>
+                        <p>Please see the following websites for important information. Citylights take no
+                          responsibility for their content. For artichoke advice, call the number
+                          below.<br /><br /><span><img src="./img/list_bullets.gif" alt="bullet" border="0"
+                              align="absmiddle"> Killer bees. <a onfocus="blur();" href="../offsite.html"
+                              target="_blank">Click here</a>.<br /><img src="./img/list_bullets.gif" alt="bullet"
+                              border="0" align="absmiddle"> Onions. <a onfocus="blur();" href="../offsite.html"
+                              target="_blank">Click here</a>.</span><br /><br /><b>Artichoke advice telephone hotline:
+                          </b><img src="./img/telefon_white_bg.gif" alt="1234 56789" border="0" align="absmiddle"></p>
+                      </div>
+                    </td>
+                    <td width="20px"><img src="./img/blank_5x5.gif" width="20px" height="5px"></td>
+                    <td width="151px" valign="top">
+                      <table width="151px" border="0px" cellspacing="0px" cellpadding="0px">
+                        <tr height="1px">
+                          <td width="1px" background="./img/marker2_t.gif" rowspan="11" valign="top"><img
+                              src="./img/marker2_t.gif" width="1px" height="30px"></td>
+                          <td width="151px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px"
+                              height="1px"></td>
+                        </tr>
+                        <tr height="25px">
+                          <td width="150px" bgcolor="#a9b8bf">
+                            <font color="#41545d" face="Verdana" size="2">&nbsp;<b>Free Penguins</b></font>
+                          </td>
+                        </tr>
+                        <tr height="106px">
+                          <td width="150px">
+                            <div><img src="./img/teaser_right1.jpg" width="150px" height="106px"></div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td width="150px">
+                            <table width="150px" border="0px" cellspacing="0px" cellpadding="3px">
+                              <tr>
+                                <td>
+                                  <div>"Free penguins" slogan at zoo benefit concert causes confusion among city
+                                    rockers. Adjective or verb?<br><a href="tickets.html" onfocus="blur();"
+                                      style="text-decoration:none;">Read More...</a></div>
+                                </td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                        <tr height="17px">
+                          <td>&nbsp;</td>
+                        </tr>
+                        <tr height="1px">
+                          <td width="150px" background="./img/marker2_w.gif"><img src="./img/marker2_w.gif" width="78px"
+                              height="1px"></td>
+                        </tr>
+                        <tr height="25px">
+                          <td width="150px" bgcolor="#a9b8bf">
+                            <font color="#41545d" face="Verdana" size="2">&nbsp;<b>More City Parks</b></font>
+                          </td>
+                        </tr>
+                        <tr height="154px">
+                          <td width="150px"><img src="./img/teaser_right2.jpg" width="150px" height="154px"></td>
+                        </tr>
+                        <tr>
+                          <td width="150px">
+                            <table width="150px" border="0px" cellspacing="0px" cellpadding="3px">
+                              <tr>
+                                <td>More parks and more green throughout the city at the price of already rare car
+                                  parking spaces, how will this affect you?<br><a href="survey.html" onfocus="blur();"
+                                    style="text-decoration:none;">Read More...</a></td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
+                <table width="780px" height="17px" border="0px" cellspacing="0px" cellpadding="0px" bgcolor="#EDEDED">
+                  <tr height="17px">
+                    <td align="right">
+                      <font color="black" face="Verdana" size="1"><a rel="Copyright"
+                          href="http://www.w3.org/Consortium/Legal/ipr-notice#Copyright">Copyright</a> &copy; 2012 <a
+                          href="http://www.w3.org/"><acronym
+                            title="World Wide Web Consortium">W3C</acronym></a><sup>&reg;</sup> (<a
+                          href="http://www.csail.mit.edu/"><acronym
+                            title="Massachusetts Institute of Technology">MIT</acronym></a>, <a
+                          href="http://www.ercim.org/"><acronym
+                            title="European Research Consortium for Informatics and Mathematics">ERCIM</acronym></a>, <a
+                          href="http://www.keio.ac.jp/">Keio</a>)</font>
+                    </td>
+                  </tr>
+                </table>
+                <!--// END FOOTER AREA //-->
+              <td width="10px" background="./img/border_right.gif"><img src="./img/border_right.gif" width="10px"></td>
+            </tr>
+            <tr height="10px">
+              <td width="10px" height="10px" background="./img/border_bottom_left.gif"><img
+                  src="./img/border_bottom_left.gif" width="10px" height="10px"></td>
+              <td width="780px" height="10px" background="./img/border_bottom.gif"><img src="./img/border_bottom.gif"
+                  height="10px"></td>
+              <td width="10px" height="10px" background="./img/border_bottom_right.gif"><img
+                  src="./img/border_bottom_right.gif" width="10px" height="10px"></td>
+            </tr>
+          </table>
+  </div>
+</body>
+
+</html>

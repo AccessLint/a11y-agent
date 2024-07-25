@@ -37,14 +37,14 @@ module Sublayer
       end
 
       step do
-        contents = File.read("./index.html")
+        contents = File.read("./public/index.html")
 
         @issue_types.each do |issue_type|
           puts "Fixing issue: #{issue_type}"
           fixed = FixA11yGenerator.new(contents: contents, issues: @accessibility_issues.select { |issue| issue["id"] == issue_type }.to_json).generate
           puts Diffy::Diff.new(contents, fixed).to_s(:color)
           contents = fixed
-          File.write("./index.html", contents)
+          File.write("./public/index.html", contents)
           system("git commit -am'Fix #{issue_type}'")
         end
       end
