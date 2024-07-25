@@ -12,7 +12,6 @@ module Sublayer
   module Agents
     class FixA11yAgent < Base
       def initialize
-        @first_run = true
         @accessibility_issues = []
         @issue_types = []
       end
@@ -56,11 +55,8 @@ module Sublayer
           puts Diffy::Diff.new(contents, fixed).to_s(:color)
           contents = fixed
           File.write("./index.html", contents)
+          system("git commit -am'Fix #{issue_type}'")
         end
-
-        FileUtils.touch("./trigger.txt") if @first_run
-
-        @first_run = false
       end
 
       private
