@@ -22,18 +22,13 @@ module Sublayer
 
       check_status do
         stdout, stderr, status = Open3.capture3("axe --exit --stdout http://localhost:8080")
-        
         @axe_output = stdout
         @accessibility_issues = JSON.parse(stdout)[0]["violations"]
 
         if !@accessibility_issues.empty? 
           @issue_types = @accessibility_issues.map { |issue| issue["id"] }
-
           formatted_issues = @accessibility_issues.map { |issue| issue["description"] }.join("\n\n")
-
           puts "Found #{@accessibility_issues.length} accessibility issues: \n\n#{formatted_issues}"
-
-          FileUtils.touch("./trigger.txt")
         end
       end
 
@@ -42,27 +37,16 @@ module Sublayer
       end
 
       step do
-        # if !@accessibility_issues.empty?
-        #   system("git checkout -- index.html")
-        # end
-
         contents = File.read("./index.html")
 
         @issue_types.each do |issue_type|
           puts "Fixing issue: #{issue_type}"
-
           fixed = FixA11yGenerator.new(contents: contents, issues: @accessibility_issues.select { |issue| issue["id"] == issue_type }.to_json).generate
           puts Diffy::Diff.new(contents, fixed).to_s(:color)
           contents = fixed
           File.write("./index.html", contents)
           system("git commit -am'Fix #{issue_type}'")
         end
-      end
-
-      private
-
-      def parse_axe_output(output:)
-        JSON.parse(output)[0]["violations"]
       end
     end
   end
