@@ -12,7 +12,9 @@ module Sublayer
   module Agents
     class FixA11yAgent < Base
       def initialize
+        @first_run = true
         @accessibility_issues = []
+        @issue_types = []
       end
 
       trigger_on_files_changed do
@@ -25,9 +27,15 @@ module Sublayer
         @axe_output = stdout
         @accessibility_issues = JSON.parse(stdout)[0]["violations"]
 
-        formatted_issues = @accessibility_issues.map { |issue| issue["description"] }.join("\n\n")
+        if !@accessibility_issues.empty? 
+          @issue_types = @accessibility_issues.map { |issue| issue["id"] }
 
-        @accessibility_issues.empty? ? puts("No accessibility issues found") : puts("Found #{@accessibility_issues.length} accessibility issues: \n\n#{formatted_issues}")
+          formatted_issues = @accessibility_issues.map { |issue| issue["description"] }.join("\n\n")
+
+          puts "Found #{@accessibility_issues.length} accessibility issues: \n\n#{formatted_issues}"
+
+          FileUtils.touch("./trigger.txt")
+        end
       end
 
       goal_condition do
@@ -35,19 +43,24 @@ module Sublayer
       end
 
       step do
-        if @accessibility_issues.empty?
-          system("git checkout -- index.html")
-        end
+        # if !@accessibility_issues.empty?
+        #   system("git checkout -- index.html")
+        # end
 
         contents = File.read("./index.html")
 
-        fixed = FixA11yGenerator.new(contents: contents, issues: @accessibility_issues).generate
+        @issue_types.each do |issue_type|
+          puts "Fixing issue: #{issue_type}"
 
-        puts Diffy::Diff.new(contents, fixed).to_s(:color)
+          fixed = FixA11yGenerator.new(contents: contents, issues: @accessibility_issues.select { |issue| issue["id"] == issue_type }.to_json).generate
+          puts Diffy::Diff.new(contents, fixed).to_s(:color)
+          contents = fixed
+          File.write("./index.html", contents)
+        end
 
-        File.write("./index.html", fixed)
+        FileUtils.touch("./trigger.txt") if @first_run
 
-        FileUtils.touch("./trigger.txt")
+        @first_run = false
       end
 
       private
