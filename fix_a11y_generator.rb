@@ -1,11 +1,11 @@
 class FixA11yGenerator < Sublayer::Generators::Base
   llm_output_adapter type: :single_string,
-    name: "fix_accessibility_issues_based_on_axe_output",
-    description: "Given an HTML file and a list of accessibility issues, generate a new HTML file with the issues fixed."
+    name: "fix_accessibility_issue_based_on_a11y_issue",
+    description: "Given a JSX file and an accessibility issue, generate a new JSX file with the issue fixed."
 
-  def initialize(contents:, issues:)
+  def initialize(contents:, issue:)
     @contents = contents
-    @issues = issues
+    @issue = issue
   end
 
   def generate
@@ -14,14 +14,15 @@ class FixA11yGenerator < Sublayer::Generators::Base
 
   def prompt
     <<~PROMPT
-      Given the following HTML contents and accessibility issues, generate a new HTML file with the issues fixed:
-      HTML contents:
+      Given the following JSX contents and an individual accessibility issue, generate a new JSX file with the individual issue fixed, leaving the rest of the contents unchanged.:
+
+      Code:
       #{@contents}
 
-      Accessibility issues:
-      #{@issues}
+      Accessibility issue:
+      #{@issue}
 
-      Return the fixed HTML contents.
+      Return the JSX contents with the issue fixed.
     PROMPT
   end
 end
