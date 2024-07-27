@@ -2,9 +2,12 @@ require "diffy"
 require "fileutils"
 require "json"
 require "open3"
+require "rainbow/refinement"
 require "sublayer"
 require 'dotenv/load'
 require_relative "./fix_a11y_generator"
+
+Diffy::Diff.default_format = :color
 
 # Sublayer.configuration.ai_provider = Sublayer::Providers::OpenAi
 # Sublayer.configuration.ai_model = "gpt-4o-mini"
@@ -18,6 +21,8 @@ Sublayer.configuration.ai_model = "claude-3-haiku-20240307"
 module Sublayer
   module Agents
     class A11yAgent < Base
+      using Rainbow
+
       def initialize(file:)
         @accessibility_issues = []
         @issue_types = []
@@ -58,7 +63,16 @@ module Sublayer
             result = FixA11yGenerator.new(contents: contents, issue: issue, additional_prompt: additional_prompt).generate
             result << "\n" unless result.end_with?("\n")
 
-            puts Diffy::Diff.new(contents, result).to_s(:color)
+            Diffy::Diff.new(contents, result).each_chunk do |chunk|
+              case chunk
+              when /^\+/
+                print chunk.to_s.green
+              when /^-/
+                print chunk.to_s.red
+              else
+                puts "..."
+              end
+            end
 
             puts "🤷 Approve? ([y]es/[n]o/[r]etry)"
             user_input = $stdin.gets.chomp
@@ -83,7 +97,7 @@ module Sublayer
 
         puts "🎉 Done!"
         puts "✅ Complete diff:"
-        puts Diffy::Diff.new(@file_contents, File.read(@file)).to_s(:color)
+        puts Diffy::Diff.new(@file_contents, File.read(@file)).to_s
       end
     end
   end
