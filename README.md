@@ -6,9 +6,15 @@ A11y Agent is unique in the way it combines traditional programming, AI promptin
 
 ## Usage
 
-Run the CLI command and follow the prompts:
+1. Clone the repo:
+
+        git clone git@github.com:AccessLint/a11y-agent.git
+
+2. Run the CLI command and follow the prompts:
 
         ruby a11y_agent.rb /path/to/file.[jsx|tsx]
+
+## Demo
 
 https://github.com/user-attachments/assets/757227ad-7f8f-4fa8-933f-daea335313c9
 
