@@ -1,17 +1,10 @@
 {
-  "scripts": {
-    "serve": "nodemon --ext .html server.js"
-  },
   "devDependencies": {
-    "@axe-core/cli": "^4.9.1",
     "@eslint/js": "^9.8.0",
-    "eslint": "9.x",
+    "eslint": "^9.8.0",
     "eslint-plugin-jsx-a11y": "^6.9.0",
     "eslint-plugin-react": "^7.35.0",
-    "express": "^4.19.2",
     "globals": "^15.8.0",
-    "http-server": "^14.1.1",
-    "nodemon": "^3.1.4",
     "typescript": "^5.5.4",
     "typescript-eslint": "^7.17.0"
   }
