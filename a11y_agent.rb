@@ -6,8 +6,14 @@ require "sublayer"
 require 'dotenv/load'
 require_relative "./fix_a11y_generator"
 
-Sublayer.configuration.ai_provider = Sublayer::Providers::OpenAI
-Sublayer.configuration.ai_model = "gpt-4o-mini"
+# Sublayer.configuration.ai_provider = Sublayer::Providers::OpenAi
+# Sublayer.configuration.ai_model = "gpt-4o-mini"
+
+# Sublayer.configuration.ai_provider = Sublayer::Providers::Gemini
+# Sublayer.configuration.ai_model = "gemini-1.5-flash-latest"
+
+Sublayer.configuration.ai_provider = Sublayer::Providers::Claude
+Sublayer.configuration.ai_model = "claude-3-haiku-20240307"
 
 module Sublayer
   module Agents
@@ -24,10 +30,10 @@ module Sublayer
       end
 
       check_status do
-        stdout, stderr, status = Open3.capture3("eslint #{@file}")
+        stdout, stderr, status = Open3.capture3("eslint #{@file} --format stylish")
 
-        @accessibility_issues = stdout.include?("jsx-a11y") ? stdout.split("jsx-a11y") : []
-        @accessibility_issues.pop
+        @accessibility_issues = stdout.include?("jsx-a11y") ? stdout.split("\n")[2..-1] : []
+        @accessibility_issues = @accessibility_issues.map { |issue| issue.gsub(/\s+/, ' ').strip }
 
         if !@accessibility_issues.empty?
           puts "🚨 Found #{@accessibility_issues.length} accessibility issues"
@@ -48,9 +54,10 @@ module Sublayer
           additional_prompt = nil
 
           until user_input == "y" || user_input == "n"
-            puts "🔧 Fixing issue: #{issue}"
-
+            puts "🔧 Attempting a fix: #{issue}"
             result = FixA11yGenerator.new(contents: contents, issue: issue, additional_prompt: additional_prompt).generate
+            result << "\n" unless result.end_with?("\n")
+
             puts Diffy::Diff.new(contents, result).to_s(:color)
 
             puts "🤷 Approve? ([y]es/[n]o/[r]etry)"
@@ -62,21 +69,21 @@ module Sublayer
             when "n"
               fixed = contents
             when "r"
-              puts "Add instructions for fixing the issue:"
+              puts "What needs to change?"
               additional_prompt = $stdin.gets.chomp
               fixed = nil
             end
           end
 
           contents = fixed
+
+          puts "Writing to file..."
           File.write(@file, contents)
-          # system("git commit -am'Fix #{issue}'")
         end
 
+        puts "🎉 Done!"
         puts "✅ Complete diff:"
         puts Diffy::Diff.new(@file_contents, File.read(@file)).to_s(:color)
-
-        puts "🎉 Done!"
       end
     end
   end
