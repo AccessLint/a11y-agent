@@ -9,3 +9,6 @@ A11y Agent is unique in the way it combines traditional programming, AI promptin
 Run the CLI command and follow the prompts:
 
         ruby a11y_agent.rb /path/to/file.[jsx|tsx]
+
+https://github.com/user-attachments/assets/757227ad-7f8f-4fa8-933f-daea335313c9
+
