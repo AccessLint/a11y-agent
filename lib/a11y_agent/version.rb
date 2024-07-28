@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module A11yAgent
-  VERSION = '0.0.5-alpha.2'
+  VERSION = '0.0.5-alpha.3'
 end
