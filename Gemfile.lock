@@ -1,3 +1,12 @@
+PATH
+  remote: .
+  specs:
+    a11y_agent (0.0.1)
+      diffy (~> 3.4)
+      rainbow (~> 3.0)
+      sublayer (~> 0.1)
+      tty-prompt (~> 0.23)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -58,17 +67,17 @@ GEM
     mutex_m (0.2.0)
     net-http (0.4.1)
       uri
-    nokogiri (1.16.6-aarch64-linux)
+    nokogiri (1.16.7-aarch64-linux)
       racc (~> 1.4)
-    nokogiri (1.16.6-arm-linux)
+    nokogiri (1.16.7-arm-linux)
       racc (~> 1.4)
-    nokogiri (1.16.6-arm64-darwin)
+    nokogiri (1.16.7-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.16.6-x86-linux)
+    nokogiri (1.16.7-x86-linux)
       racc (~> 1.4)
-    nokogiri (1.16.6-x86_64-darwin)
+    nokogiri (1.16.7-x86_64-darwin)
       racc (~> 1.4)
-    nokogiri (1.16.6-x86_64-linux)
+    nokogiri (1.16.7-x86_64-linux)
       racc (~> 1.4)
     parallel (1.25.1)
     parser (3.3.4.0)
@@ -78,6 +87,7 @@ GEM
       tty-color (~> 0.5)
     racc (1.8.0)
     rainbow (3.1.1)
+    rake (13.2.1)
     rb-fsevent (0.11.2)
     rb-inotify (0.11.1)
       ffi (~> 1.0)
@@ -145,11 +155,9 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
-  diffy
-  rainbow
+  a11y_agent!
+  rake
   rubocop
-  sublayer (~> 0.1)
-  tty-prompt
 
 BUNDLED WITH
    2.5.3

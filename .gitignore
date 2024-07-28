@@ -4,3 +4,7 @@
 .vscode/
 node_modules/
 tmp/
+.DS_Store
+/vendor/cache
+a11y_agent*.tar*
+a11y_agent*.sha256

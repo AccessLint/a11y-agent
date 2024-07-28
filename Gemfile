@@ -1,7 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'diffy'
-gem 'rainbow'
+gemspec
+
 gem 'rubocop'
-gem 'sublayer', '~> 0.1'
-gem 'tty-prompt'
