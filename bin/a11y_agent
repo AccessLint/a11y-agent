@@ -6,4 +6,12 @@ $LOAD_PATH.unshift(file_name) unless $LOAD_PATH.include?(file_name)
 
 require 'a11y_agent'
 
+if ARGV.empty?
+  puts 'Usage: a11y_agent <path_to_html_file>'
+  exit 1
+elsif !File.exist?(ARGV[0])
+  puts "File #{ARGV[0]} does not exist"
+  exit 1
+end
+
 Sublayer::Agents::A11yAgent.new(file: ARGV[0]).run
