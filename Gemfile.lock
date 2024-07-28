@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    a11y_agent (0.0.2)
+    a11y_agent (0.0.3)
       diffy (~> 3.4)
       rainbow (~> 3.0)
       sublayer (~> 0.1)
