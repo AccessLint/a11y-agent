@@ -61,7 +61,7 @@ namespace :release do
 
         test do
           # Simple test to check the version or a help command
-          system "\#{bin}/a11y_agent", "--version"
+          system "\#{bin}/a11y_agent", "--help"
         end
       end
     RUBY
