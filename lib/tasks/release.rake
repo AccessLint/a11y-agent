@@ -54,6 +54,7 @@ namespace :release do
           # Extract all files to libexec, which is a common Homebrew practice for third-party tools
           libexec.install Dir["*"]
 
+          system "bundle", "install", "--without", "development"
           bin.install libexec/"bin/a11y_agent"
           bin.env_script_all_files(libexec/"bin", GEM_HOME: ENV.fetch("GEM_HOME"))
         end
