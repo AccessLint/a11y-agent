@@ -43,7 +43,6 @@ namespace :release do
       class #{class_name} < Formula
         desc "#{spec.summary}"
         homepage "#{spec.homepage}"
-        version "#{spec.version}"
         url "#{url}"
         sha256 "#{sha256sum}"
 

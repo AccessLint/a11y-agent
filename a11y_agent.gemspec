@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors = ['Cameron Cundiff']
   spec.email = 'cameron@accesslint.com'
 
-  spec.summary = 'An AI agent that fixes accessibility issues'
+  spec.summary = 'AI agent that fixes accessibility issues'
   spec.description = 'A11y Agent is a tool that helps you fix accessibility issues, using AI and user input.'
   spec.homepage =
     'https://github.com/accesslint/a11y-agent'
