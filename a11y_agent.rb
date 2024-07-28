@@ -1,11 +1,12 @@
-require "diffy"
-require "fileutils"
-require "json"
-require "open3"
-require "rainbow/refinement"
-require "sublayer"
+require 'diffy'
+require 'fileutils'
+require 'json'
+require 'open3'
+require 'rainbow/refinement'
+require 'sublayer'
+require 'tty-prompt'
 require 'dotenv/load'
-require_relative "./fix_a11y_generator"
+require_relative './fix_a11y_generator'
 
 Diffy::Diff.default_format = :color
 
@@ -16,7 +17,7 @@ Diffy::Diff.default_format = :color
 # Sublayer.configuration.ai_model = "gemini-1.5-flash-latest"
 
 Sublayer.configuration.ai_provider = Sublayer::Providers::Claude
-Sublayer.configuration.ai_model = "claude-3-haiku-20240307"
+Sublayer.configuration.ai_model = 'claude-3-haiku-20240307'
 
 module Sublayer
   module Agents
@@ -31,36 +32,38 @@ module Sublayer
       end
 
       trigger_on_files_changed do
-        ["./trigger.txt"]
+        ['./trigger.txt']
       end
 
       check_status do
-        stdout, stderr, status = Open3.capture3("eslint #{@file} --format stylish")
+        puts "🔍 Checking accessibility issues in #{@file}..."
+        stdout, _stderr, _status = Open3.capture3("eslint #{@file} --format stylish")
 
-        @accessibility_issues = stdout.include?("jsx-a11y") ? stdout.split("\n")[2..-1] : []
+        @accessibility_issues = stdout.split("\n")[2..]
         @accessibility_issues = @accessibility_issues.map { |issue| issue.gsub(/\s+/, ' ').strip }
 
-        if !@accessibility_issues.empty?
-          puts "🚨 Found #{@accessibility_issues.length} accessibility issues"
-        end
+        puts "🚨 Found #{@accessibility_issues.length} accessibility issues" unless @accessibility_issues.empty?
       end
 
       goal_condition do
-        puts "🎉 All accessibility issues have been fixed!" if @accessibility_issues.empty?
+        puts '🎉 All accessibility issues have been fixed!' if @accessibility_issues.empty?
         @accessibility_issues.empty?
       end
 
       step do
-        @accessibility_issues.each_with_index do |issue|
-          contents = File.read("#{@file}")
+        prompt = TTY::Prompt.new
+
+        @accessibility_issues.each do |issue|
+          contents = File.read(@file)
 
           user_input = nil
           fixed = nil
           additional_prompt = nil
 
-          until user_input == "y" || user_input == "n"
+          until %i[yes no].include?(user_input)
             puts "🔧 Attempting a fix: #{issue}"
-            result = FixA11yGenerator.new(contents: contents, issue: issue, additional_prompt: additional_prompt).generate
+            result = FixA11yGenerator.new(contents:, issue:,
+                                          additional_prompt:).generate
             result << "\n" unless result.end_with?("\n")
 
             Diffy::Diff.new(contents, result).each_chunk do |chunk|
@@ -72,35 +75,43 @@ module Sublayer
               else
                 lines = chunk.to_s.split("\n")
                 puts lines[0..2].join("\n")
-                puts "..."
-                puts lines[-3..-1].join("\n")
+                puts '...'
+                puts lines[-3..].join("\n")
               end
             end
 
-            puts "🤷 Approve? ([y]es/[n]o/[r]etry)"
-            user_input = $stdin.gets.chomp
+            choices = [
+              { key: 'y', name: 'approve and continue', value: :yes },
+              { key: 'n', name: 'skip this change', value: :no },
+              { key: 'r', name: 'retry with optional instructions', value: :retry },
+              { key: 'q', name: 'quit; stop making changes', value: :quit }
+            ]
+
+            user_input = prompt.expand('Approve changes?', choices)
 
             case user_input
-            when "y"
+            when :yes
               fixed = result
-            when "n"
+            when :no
               fixed = contents
-            when "r"
-              puts "What needs to change?"
-              additional_prompt = $stdin.gets.chomp
+            when :retry
+              additional_prompt = prompt.ask('Additional instructions:')
               fixed = nil
+            when :quit
+              puts 'Quitting...'
+              exit
             end
           end
 
           contents = fixed
 
-          puts "Writing to file..."
+          puts 'Writing to file...'
           File.write(@file, contents)
         end
 
-        puts "🎉 Done!"
-        puts "✅ Complete diff:"
-        puts Diffy::Diff.new(@file_contents, File.read(@file)).to_s
+        puts '🎉 Done!'
+        puts '✅ Complete diff:'
+        puts Diffy::Diff.new(@file_contents, File.read(@file))
       end
     end
   end
