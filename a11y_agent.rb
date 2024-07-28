@@ -70,7 +70,10 @@ module Sublayer
               when /^-/
                 print chunk.to_s.red
               else
+                lines = chunk.to_s.split("\n")
+                puts lines[0..2].join("\n")
                 puts "..."
+                puts lines[-3..-1].join("\n")
               end
             end
 
