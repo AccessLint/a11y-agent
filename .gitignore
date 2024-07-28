@@ -1,5 +1,6 @@
+*.gem
+*.log
+.env*
+.vscode/
 node_modules/
 tmp/
-*.log
-.env
-.vscode/

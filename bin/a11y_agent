@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+file_name = "#{File.dirname(__FILE__)}/../lib"
+$LOAD_PATH.unshift(file_name) unless $LOAD_PATH.include?(file_name)
+
+require 'a11y_agent'
+
+Sublayer::Agents::A11yAgent.new(file: ARGV[0]).run

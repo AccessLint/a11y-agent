@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'diffy'
 require 'fileutils'
 require 'json'
@@ -5,7 +7,6 @@ require 'open3'
 require 'rainbow/refinement'
 require 'sublayer'
 require 'tty-prompt'
-require 'dotenv/load'
 require_relative './fix_a11y_generator'
 
 Diffy::Diff.default_format = :color
@@ -116,5 +117,3 @@ module Sublayer
     end
   end
 end
-
-Sublayer::Agents::A11yAgent.new(file: ARGV[0]).run
