@@ -24,16 +24,16 @@ Gem::Specification.new do |spec|
   spec.files = IO.popen(%w[git ls-files -z], chdir: __dir__, err: IO::NULL) do |ls|
     ls.readlines("\x0", chomp: true).reject do |f|
       (f == gemspec) ||
-        f.start_with?(*%w[bin/ test/ spec/ features/ .git .github Gemfile])
+        f.start_with?(*%w[exe/ test/ spec/ features/ .git .github Gemfile])
     end
   end
-  spec.bindir = 'bin'
-  spec.executables = spec.files.grep(%r{\Abin/}) { |f| File.basename(f) }
+  spec.bindir = 'exe'
+  spec.executables = spec.files.grep(%r{\exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
   spec.add_dependency 'diffy', '~> 3.4'
   spec.add_dependency 'rainbow', '~> 3.0'
-  spec.add_dependency 'sublayer', '~> 0.1'
+  spec.add_dependency 'sublayer', '~> 0.2.1'
   spec.add_dependency 'tty-prompt', '~> 0.23'
 
   spec.add_development_dependency 'rake'

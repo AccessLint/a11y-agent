@@ -8,3 +8,4 @@ tmp/
 /vendor/cache
 a11y_agent*.tar*
 a11y_agent*.sha256
+pkg/

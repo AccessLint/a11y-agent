@@ -4,7 +4,7 @@ PATH
     a11y_agent (0.0.5.pre.alpha.3)
       diffy (~> 3.4)
       rainbow (~> 3.0)
-      sublayer (~> 0.1)
+      sublayer (~> 0.2.1)
       tty-prompt (~> 0.23)
 
 GEM
@@ -136,7 +136,7 @@ GEM
     ruby-progressbar (1.13.0)
     strscan (3.1.0)
     stud (0.0.23)
-    sublayer (0.1.0)
+    sublayer (0.2.1)
       activesupport
       colorize
       httparty

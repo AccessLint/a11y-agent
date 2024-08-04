@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-file_name = "#{File.dirname(__FILE__)}/../lib"
+file_name = "#{File.dirname(__FILE__)}/../lib/agents"
 $LOAD_PATH.unshift(file_name) unless $LOAD_PATH.include?(file_name)
 
 require 'a11y_agent'

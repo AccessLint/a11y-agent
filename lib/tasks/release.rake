@@ -55,8 +55,8 @@ namespace :release do
           libexec.install Dir["*"]
 
           system "bundle", "install", "--without", "development"
-          bin.install libexec/"bin/a11y_agent"
-          bin.env_script_all_files(libexec/"bin", GEM_HOME: ENV.fetch("GEM_HOME"))
+          bin.install libexec/"exe/a11y_agent"
+          bin.env_script_all_files(libexec/"exe", GEM_HOME: ENV.fetch("GEM_HOME"))
         end
 
         test do
