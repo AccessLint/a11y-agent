@@ -32,6 +32,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'diffy', '~> 3.4'
+  spec.add_dependency 'dotenv', '~> 3.1'
   spec.add_dependency 'rainbow', '~> 3.0'
   spec.add_dependency 'sublayer', '~> 0.2'
   spec.add_dependency 'tty-prompt', '~> 0.23'
