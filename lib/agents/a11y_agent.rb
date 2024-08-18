@@ -63,7 +63,7 @@ module Sublayer
       private
 
       def run_axe(file: @file)
-        stdout, _stderr, _status = Open3.capture3("ts-node lib/bin/axe.ts #{file}")
+        stdout, _stderr, _status = Open3.capture3("yarn --silent ts-node lib/bin/axe.ts #{file}")
         JSON.parse(stdout)
       end
 
