@@ -9,7 +9,6 @@ require 'rainbow/refinement'
 require 'sublayer'
 require 'tty-prompt'
 require_relative '../generators/fix_a11y_generator'
-require_relative '../generators/hydrate_document_generator'
 
 Diffy::Diff.default_format = :color
 
@@ -69,7 +68,7 @@ module Sublayer
 
       def load_issues
         Tempfile.create(['', File.extname(@file)]) do |tempfile|
-          tempfile.write(hydrated_file)
+          tempfile.write(@file)
           tempfile.rewind
 
           @accessibility_issues = run_axe(file: tempfile.path).map do |issue|
@@ -79,17 +78,6 @@ module Sublayer
         end
 
         puts "🚨 Found #{@accessibility_issues.length} accessibility issues" unless @accessibility_issues.empty?
-      end
-
-      def hydrated_file
-        puts "Loading fake data into #{@file}"
-        hydrated = HydrateDocumentGenerator.new(contents: @file_contents, extension: File.extname(@file)).generate
-        hydrated << "\n" until hydrated.end_with?("\n")
-
-        print_diff(contents: @file_contents, fixed: hydrated, message: '📊 Changes made:')
-        hydration_approved = @prompt.yes? 'Continue with updates?'
-        hydrated = @file_contents unless hydration_approved
-        hydrated
       end
 
       def fix_issue_and_save(issue:)
