@@ -54,6 +54,10 @@ namespace :release do
           # Extract all files to libexec, which is a common Homebrew practice for third-party tools
           libexec.install Dir["*"]
 
+          system "bundle", "install", "--gemfile", libexec/"Gemfile"
+          system "gem", "build", libexec/"#{spec.name}.gemspec"
+          system "gem", "install", "--ignore-dependencies", "#{spec.name}-#{version}.gem"
+
           bin.install libexec/"exe/#{spec.name}"
           bin.env_script_all_files(libexec/"exe", GEM_HOME: ENV.fetch("GEM_HOME", nil))
         end

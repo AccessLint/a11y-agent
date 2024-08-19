@@ -1,11 +1,14 @@
 # frozen_string_literal: true
 
+require 'axe/core'
+require 'axe/api/run'
 require 'dotenv/load'
 require 'diffy'
 require 'fileutils'
 require 'json'
 require 'open3'
 require 'rainbow/refinement'
+require 'selenium-webdriver'
 require 'sublayer'
 require 'tty-prompt'
 require_relative '../generators/fix_a11y_generator'
@@ -62,8 +65,16 @@ module Sublayer
       private
 
       def run_axe(file: @file)
-        stdout, _stderr, _status = Open3.capture3("yarn --silent ts-node lib/bin/axe.ts #{file}")
-        JSON.parse(stdout)
+        options = Selenium::WebDriver::Chrome::Options.new
+        options.add_argument('--headless')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--allow-file-access-from-files');
+        options.add_argument('--enable-local-file-access');
+        driver = Selenium::WebDriver.for(:chrome, options:)
+        driver.get "file:///#{File.expand_path(@file)}"
+        axe = Axe::Core.new(driver).call(Axe::API::Run.new)
+        axe.results.violations
       end
 
       def load_issues
@@ -72,8 +83,11 @@ module Sublayer
           tempfile.rewind
 
           @accessibility_issues = run_axe(file: tempfile.path).map do |issue|
-            %w[id impact tags helpUrl].each { |key| issue.delete(key) }
-            issue
+            OpenStruct.new({
+                             description: issue.description,
+                             help: issue.help,
+                             nodes: issue.nodes
+                           })
           end
         end
 
@@ -83,14 +97,13 @@ module Sublayer
       def fix_issue_and_save(issue:)
         updated_contents = File.read(@file)
 
-        issue['nodes'].each do |node|
+        issue.nodes.each do |node|
           user_input = nil
           fixed = nil
           additional_prompt = nil
-          summary = node['failureSummary']
-          node_issue = [summary, issue['help'], node['html']].join("\n\n")
+          node_issue = [node.failureSummary, issue.help, node.html].join("\n\n")
 
-          puts "🔍 #{issue['help']}"
+          puts "🔍 #{issue.help}"
           attempt = @prompt.yes? "Attempt to fix these issues in #{@file}?"
           next unless attempt
 
