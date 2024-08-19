@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    a11y_agent (0.0.10)
+    a11y_agent (0.0.11)
       axe-core-api (~> 4.9)
       diffy (~> 3.4)
       dotenv (~> 3.1)
@@ -24,7 +24,6 @@ GEM
       minitest (>= 5.1)
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
-    arr-pm (0.0.12)
     ast (2.4.2)
     axe-core-api (4.9.1)
       dumb_delegator
@@ -33,11 +32,8 @@ GEM
       descendants_tracker (~> 0.0.4)
       ice_nine (~> 0.11.0)
       thread_safe (~> 0.3, >= 0.3.1)
-    backports (3.25.0)
     base64 (0.2.0)
     bigdecimal (3.1.8)
-    cabin (0.9.0)
-    clamp (1.0.1)
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
     colorize (1.1.0)
@@ -68,14 +64,6 @@ GEM
     ffi (1.17.0-x86_64-darwin)
     ffi (1.17.0-x86_64-linux-gnu)
     ffi (1.17.0-x86_64-linux-musl)
-    fpm (1.15.1)
-      arr-pm (~> 0.0.11)
-      backports (>= 2.6.2)
-      cabin (>= 0.6.0)
-      clamp (~> 1.0.0)
-      pleaserun (~> 0.0.29)
-      rexml
-      stud
     httparty (0.22.0)
       csv
       mini_mime (>= 1.0.0)
@@ -83,7 +71,6 @@ GEM
     i18n (1.14.5)
       concurrent-ruby (~> 1.0)
     ice_nine (0.11.2)
-    insist (1.0.0)
     json (2.7.2)
     language_server-protocol (3.17.0.3)
     listen (3.9.0)
@@ -95,7 +82,6 @@ GEM
     multi_xml (0.7.1)
       bigdecimal (~> 3.1)
     multipart-post (2.4.1)
-    mustache (0.99.8)
     net-http (0.4.1)
       uri
     nokogiri (1.16.7-aarch64-linux)
@@ -116,13 +102,6 @@ GEM
       racc
     pastel (0.8.0)
       tty-color (~> 0.5)
-    pleaserun (0.0.32)
-      cabin (> 0)
-      clamp
-      dotenv
-      insist
-      mustache (= 0.99.8)
-      stud
     racc (1.8.1)
     rainbow (3.1.1)
     rake (13.2.1)
@@ -159,7 +138,6 @@ GEM
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
     strscan (3.1.0)
-    stud (0.0.23)
     sublayer (0.2.3)
       activesupport
       colorize
@@ -209,8 +187,7 @@ PLATFORMS
 
 DEPENDENCIES
   a11y_agent!
-  fpm
-  rake
+  rake (~> 13.2)
   rubocop
 
 BUNDLED WITH
