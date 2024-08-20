@@ -44,8 +44,8 @@ module Sublayer
         @prompt = TTY::Prompt.new
       end
 
-      trigger_on_files_changed do
-        ['./trigger.txt']
+      def self.triggers
+        []
       end
 
       check_status do
