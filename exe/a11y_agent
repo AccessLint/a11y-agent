@@ -6,15 +6,17 @@ $LOAD_PATH.unshift(file_name) unless $LOAD_PATH.include?(file_name)
 
 require 'a11y_agent'
 
+protocol = 'https://'
+target = ARGV[1]
+
 if ARGV.empty?
   puts 'Usage: a11y_agent <path_to_jsx_file>'
   exit 1
 elsif ARGV[0] == '-h' || ARGV[0] == '--help'
   puts 'Usage: a11y_agent <path_to_jsx_file>'
   exit 0
-elsif !File.exist?(ARGV[0])
-  puts "File #{ARGV[0]} does not exist"
-  exit 1
+elsif !ARGV[0].include?(/^https:/)
+  protocol = 'file:///'
 end
 
-Sublayer::Agents::A11yAgent.new(file: ARGV[0]).run
+Sublayer::Agents::A11yAgent.new(target:, protocol:).run

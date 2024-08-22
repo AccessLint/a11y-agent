@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = 'A11y Agent is a tool that helps you fix accessibility issues, using AI and user input.'
   spec.homepage =
     'https://github.com/accesslint/a11y-agent'
-  spec.license = 'MIT'
+  spec.license = 'AGPL-3.0'
   spec.required_ruby_version = '>= 3.3.0'
 
   spec.metadata['allowed_push_host'] = 'https://rubygems.org'

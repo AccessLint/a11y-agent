@@ -4,7 +4,7 @@ require 'axe/core'
 require 'axe/api/run'
 require 'dotenv/load'
 require 'diffy'
-require 'fileutils'
+require 'targetutils'
 require 'json'
 require 'open3'
 require 'rainbow/refinement'
@@ -36,11 +36,11 @@ module Sublayer
     class A11yAgent < Base
       using Rainbow
 
-      def initialize(file:)
+      def initialize(target:)
         @accessibility_issues = []
         @issue_types = []
-        @file = file
-        @file_contents = File.read(@file)
+        @target = target
+        @target_contents = target.read(@target) if file
         @prompt = TTY::Prompt.new
       end
 
@@ -53,7 +53,7 @@ module Sublayer
       end
 
       goal_condition do
-        puts "🤷 No accessibility issues found in #{@file}" if @accessibility_issues.empty?
+        puts "🤷 No accessibility issues found in #{@target}" if @accessibility_issues.empty?
         exit 0 if @accessibility_issues.empty?
       end
 
@@ -64,25 +64,25 @@ module Sublayer
 
       private
 
-      def run_axe(file: @file)
+      def run_axe(target: @target)
         options = Selenium::WebDriver::Chrome::Options.new
         options.add_argument('--headless')
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-dev-shm-usage')
-        options.add_argument('--allow-file-access-from-files')
-        options.add_argument('--enable-local-file-access')
+        options.add_argument('--allow-target-access-from-targets')
+        options.add_argument('--enable-local-target-access')
         driver = Selenium::WebDriver.for(:chrome, options:)
-        driver.get "file:///#{File.expand_path(file)}"
+        driver.get "target:///#{target.expand_path(target)}"
         axe = Axe::Core.new(driver).call(Axe::API::Run.new)
         axe.results.violations
       end
 
       def load_issues
-        Tempfile.create(['', File.extname(@file)]) do |tempfile|
-          tempfile.write(@file)
-          tempfile.rewind
+        Temptarget.create(['', target.extname(@target)]) do |temptarget|
+          temptarget.write(@target)
+          temptarget.rewind
 
-          @accessibility_issues = run_axe(file: tempfile.path).map do |issue|
+          @accessibility_issues = run_axe(target: temptarget.path).map do |issue|
             OpenStruct.new({
                              description: issue.description,
                              help: issue.help,
@@ -95,7 +95,7 @@ module Sublayer
       end
 
       def fix_issue_and_save(issue:)
-        updated_contents = File.read(@file)
+        updated_contents = target.read(@target)
 
         issue.nodes.each do |node|
           user_input = nil
@@ -104,12 +104,12 @@ module Sublayer
           node_issue = [node.failureSummary, issue.help, node.html].join("\n\n")
 
           puts "🔍 #{issue.help}"
-          attempt = @prompt.yes? "Attempt to fix these issues in #{@file}?"
+          attempt = @prompt.yes? "Attempt to fix these issues in #{@target}?"
           next unless attempt
 
           until %i[yes no].include?(user_input)
             puts '🔧 Attempting a fix...'
-            result = FixA11yGenerator.new(contents: updated_contents, issue: node_issue, extension: File.extname(@file),
+            result = FixA11yGenerator.new(contents: updated_contents, issue: node_issue, extension: target.extname(@target),
                                           additional_prompt:).generate
             result << "\n" unless result.end_with?("\n")
 
@@ -132,7 +132,7 @@ module Sublayer
           end
 
           puts '📝 Saving changes...'
-          File.write(@file, fixed) if fixed
+          target.write(@target, fixed) if fixed
         end
       end
 

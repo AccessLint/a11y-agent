@@ -33,11 +33,10 @@ elif [ "$1" = "--repo" ]; then
     echo "Found $2 in /tmp/$2"
     files=$(get_files "/tmp/$2")
     run_a11y_agent "$files"
-elif [ "$1" = "--dir" ]; then
-    files=$(get_files "$2")
-    run_a11y_agent "$files"
 elif [ "$1" = "--file" ]; then
     run_a11y_agent "$2"
+elif [ "$1" = "--url" ]; then
+    run_a11y_agent "--url $2"
 elif [ -z "$1" ]; then
     help
     exit 0

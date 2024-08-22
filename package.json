@@ -1,0 +1,19 @@
+{
+  "name": "a11y-agent",
+  "version": "0.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:AccessLint/a11y-agent.git",
+  "author": "Cameron Cundiff <github@ckundo.com>",
+  "license": "AGPL-3.0",
+  "private": true,
+  "dependencies": {
+    "eslint": "^9.8.0",
+    "eslint-plugin-jsx-a11y": "^6.9.0",
+    "eslint-plugin-react": "^7.35.0",
+    "typescript": "^5.5.4",
+    "typescript-eslint": "^7.17.0"
+  },
+  "devDependencies": {
+    "globals": "^15.9.0"
+  }
+}
