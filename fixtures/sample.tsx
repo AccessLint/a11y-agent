@@ -3,7 +3,7 @@ import React from "react";
 const AccessibilityViolations = () => {
   return (
     <div>
-      <html>
+      <html lang="en">
         <head>
           <title>Accessibility Violations</title>
         </head>

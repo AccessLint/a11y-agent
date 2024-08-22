@@ -19,7 +19,7 @@ Diffy::Diff.default_format = :color
 # Sublayer.configuration.ai_model = 'gpt-4o-mini'
 
 # Sublayer.configuration.ai_provider = Sublayer::Providers::Gemini
-# Sublayer.configuration.ai_model = "gemini-1.5-flash-latest"
+# Sublayer.configuration.ai_model = 'gemini-1.5-flash-latest'
 
 Sublayer.configuration.ai_provider = Sublayer::Providers::Claude
 Sublayer.configuration.ai_model = 'claude-3-haiku-20240307'
@@ -69,10 +69,10 @@ module Sublayer
         options.add_argument('--headless')
         options.add_argument('--no-sandbox')
         options.add_argument('--disable-dev-shm-usage')
-        options.add_argument('--allow-file-access-from-files');
-        options.add_argument('--enable-local-file-access');
+        options.add_argument('--allow-file-access-from-files')
+        options.add_argument('--enable-local-file-access')
         driver = Selenium::WebDriver.for(:chrome, options:)
-        driver.get "file:///#{File.expand_path(@file)}"
+        driver.get "file:///#{File.expand_path(file)}"
         axe = Axe::Core.new(driver).call(Axe::API::Run.new)
         axe.results.violations
       end
