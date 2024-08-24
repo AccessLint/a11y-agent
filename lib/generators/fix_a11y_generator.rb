@@ -1,9 +1,14 @@
-class FixA11yGenerator < Sublayer::Generators::Base
+# frozen_string_literal: true
+
+require_relative './generator_base'
+
+class FixA11yGenerator < GeneratorBase
   llm_output_adapter type: :single_string,
                      name: 'fix_template_content_based_on_a11y_issue',
                      description: 'Given a web document template and an accessibility issue, generate a new file with the issue fixed.'
 
   def initialize(contents:, issue:, extension: '', additional_prompt: nil)
+    super()
     @extension = extension
     @contents = contents
     @issue = issue

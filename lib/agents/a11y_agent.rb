@@ -1,17 +1,14 @@
 # frozen_string_literal: true
 
 require 'dotenv/load'
-require 'diffy'
 require 'fileutils'
 require 'json'
 require 'open3'
-require 'rainbow/refinement'
 require 'sublayer'
-require 'tty-prompt'
+require_relative '../actions/tty_prompt_action'
+require_relative '../actions/user_input_action'
+require_relative '../generators/code_replacement_generator'
 require_relative '../generators/fix_a11y_generator'
-require_relative '../generators/hydrate_document_generator'
-
-Diffy::Diff.default_format = :color
 
 # Sublayer.configuration.ai_provider = Sublayer::Providers::OpenAI
 # Sublayer.configuration.ai_model = 'gpt-4o-mini'
@@ -22,28 +19,20 @@ Diffy::Diff.default_format = :color
 Sublayer.configuration.ai_provider = Sublayer::Providers::Claude
 Sublayer.configuration.ai_model = 'claude-3-haiku-20240307'
 
-CHOICES = [
-  { key: 'y', name: 'approve and continue', value: :yes },
-  { key: 'n', name: 'skip this change', value: :no },
-  { key: 'r', name: 'retry with optional instructions', value: :retry },
-  { key: 'q', name: 'quit; stop making changes', value: :quit }
-].freeze
-
 module Sublayer
   module Agents
     class A11yAgent < Base
-      using Rainbow
-
       def initialize(file:)
+        super()
         @accessibility_issues = []
         @issue_types = []
         @file = file
         @file_contents = File.read(@file)
-        @prompt = TTY::Prompt.new
+        @tty_prompt = TtyPromptAction.new
       end
 
       trigger_on_files_changed do
-        ['./trigger.txt']
+        []
       end
 
       check_status do
@@ -57,19 +46,18 @@ module Sublayer
 
       step do
         @accessibility_issues.each { |issue| fix_issue_and_save(issue:) }
-        exit 0
       end
 
       private
 
       def run_axe(file: @file)
-        stdout, _stderr, _status = Open3.capture3("ts-node lib/bin/axe.ts #{file}")
+        stdout, _stderr, _status = Open3.capture3("yarn --silent ts-node lib/bin/axe.ts #{file}")
         JSON.parse(stdout)
       end
 
       def load_issues
         Tempfile.create(['', File.extname(@file)]) do |tempfile|
-          tempfile.write(hydrated_file)
+          tempfile.write(code_replaced)
           tempfile.rewind
 
           @accessibility_issues = run_axe(file: tempfile.path).map do |issue|
@@ -81,15 +69,15 @@ module Sublayer
         puts "🚨 Found #{@accessibility_issues.length} accessibility issues" unless @accessibility_issues.empty?
       end
 
-      def hydrated_file
+      def code_replaced
         puts "Loading fake data into #{@file}"
-        hydrated = HydrateDocumentGenerator.new(contents: @file_contents, extension: File.extname(@file)).generate
-        hydrated << "\n" until hydrated.end_with?("\n")
 
-        print_diff(contents: @file_contents, fixed: hydrated, message: '📊 Changes made:')
-        hydration_approved = @prompt.yes? 'Continue with updates?'
-        hydrated = @file_contents unless hydration_approved
-        hydrated
+        updated, code = UserInputAction.new(generator: CodeReplacementGenerator.new(contents: @file_contents,
+                                                                                    extension: File.extname(@file))).call
+
+        return updated if code == :success
+
+        @file_contents
       end
 
       def fix_issue_and_save(issue:)
@@ -103,35 +91,26 @@ module Sublayer
           node_issue = [summary, issue['help'], node['html']].join("\n\n")
 
           puts "🔍 #{issue['help']}"
-          attempt = @prompt.yes? "Attempt to fix these issues in #{@file}?"
+          attempt = @tty_prompt.yes? "Attempt to fix these issues in #{@file}?"
           next unless attempt
 
-          until %i[yes no].include?(user_input)
-            puts '🔧 Attempting a fix...'
-            result = FixA11yGenerator.new(contents: updated_contents, issue: node_issue, extension: File.extname(@file),
-                                          additional_prompt:).generate
-            result << "\n" unless result.end_with?("\n")
+          puts '🔧 Attempting a fix...'
+          result << "\n" unless result.end_with?("\n")
 
-            print_chunks(contents: updated_contents, fixed: result)
+          print_chunks(contents: updated_contents, fixed: result)
 
-            user_input = @prompt.expand('Approve changes?', CHOICES)
-
-            case user_input
-            when :yes
-              fixed = result
-            when :no
-              fixed = updated_contents
-            when :retry
-              additional_prompt = @prompt.ask('Additional instructions:')
-              fixed = nil
+          fixed, code = UserInputAction.new(generator: FixA11yGenerator.new(contents: updated_contents,
+                                                                            issue: node_issue)).call
+          result =
+            case code
+            when :success
+              fixed
             when :quit
-              puts 'Quitting...'
               exit 0
             end
-          end
 
           puts '📝 Saving changes...'
-          File.write(@file, fixed) if fixed
+          File.write(@file, result) if result
         end
       end
 

@@ -37,5 +37,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'sublayer', '~> 0.2'
   spec.add_dependency 'tty-prompt', '~> 0.23'
 
+  spec.add_development_dependency 'debug'
   spec.add_development_dependency 'rake'
+  spec.add_development_dependency 'rubocop'
 end

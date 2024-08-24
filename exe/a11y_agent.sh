@@ -6,7 +6,7 @@ run_a11y_agent() {
     files=$1
     for file in $files
     do
-        ./exe/a11y_agent "$file"
+        bundle exec rdbg -O -n -c -- exe/a11y_agent.rb "$file"
     done
 }
 
