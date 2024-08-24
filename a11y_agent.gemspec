@@ -36,6 +36,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'dotenv', '~> 3.1'
   spec.add_dependency 'rainbow', '~> 3.0'
   spec.add_dependency 'selenium-webdriver', '~> 4.23'
+  spec.add_dependency 'sidekiq', '~> 7.3'
   spec.add_dependency 'sublayer', '~> 0.2'
   spec.add_dependency 'tty-prompt', '~> 0.23'
 

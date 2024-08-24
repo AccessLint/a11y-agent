@@ -5,13 +5,15 @@ require 'open3'
 require 'tempfile'
 require 'diffy'
 require 'tty-prompt'
+require 'rainbow/refinement'
+require 'sidekiq'
+
+using Rainbow
 
 require_relative '../lib/a11y_agent/generators/confirmable_fix_generator'
 
 Sublayer.configuration.ai_provider = Sublayer::Providers::Claude
 Sublayer.configuration.ai_model = 'claude-3-5-sonnet-20240620'
-
-prompt = TTY::Prompt.new
 
 source_code = <<~TSX
   import React from 'react';
@@ -112,9 +114,11 @@ source_code = <<~TSX
   };
 
   export default AccessibilityFailuresExample;
+
 TSX
 
-lint_failures = nil
+prompt = TTY::Prompt.new
+lint_failures = []
 
 Tempfile.create(['a11y', '.tsx']) do |file|
   file.write(source_code)
@@ -156,12 +160,17 @@ lint_failures.each do |lint_failure|
       additional_instructions = prompt.ask('Provide additional instructions:')
       next
     elsif input == :explain
-      puts "Explanation: #{result.description}"
+      puts
+      puts 'Explanation'.bright
+      puts result.description
+      puts
+
       continue = prompt.yes? 'Continue with the fix?'
       next unless continue
     end
 
-    source_code = result.fixed
+    @source_code = result.fixed
+
     break
   end
 end

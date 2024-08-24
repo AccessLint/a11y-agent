@@ -49,12 +49,7 @@ class ConfirmableFixGenerator < Sublayer::Generators::Base
     For the fix provide:
     - description: A brief description of the change and why it is important.
     - fixed: the fixed source code with the issue resolved.
-    - impact: A description of how the fix impacts the following assistive technologies:
-      - Screen readers
-      - Voice recognition
-      - Switch devices
-      - Magnifiers
-      - Keyboard only
+    - impact: A description of how the fix impacts assistive technologies.
 
     Provide your response is an object containing the above attributes.
     PROMPT
